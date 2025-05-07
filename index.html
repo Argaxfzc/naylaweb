@@ -1,1201 +1,529 @@
-<html class="scroll-smooth" lang="id">
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>
-   Portfolio Harrits Alamsyah - Space Themed
+   Naila Putri Lapian - 3D Portfolio
   </title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
-  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&amp;display=swap" rel="stylesheet"/>
   <style>
-   /* Custom scrollbar for better futuristic look */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #7f5af0;
-    border-radius: 10px;
-  }
-  /* 3D card container perspective */
-  .perspective {
-    perspective: 1400px;
-  }
-  /* Glow effect for futuristic buttons */
-  .glow-button {
-    box-shadow:
-      0 0 8px #7f5af0,
-      0 0 20px #7f5af0,
-      0 0 40px #7f5af0,
-      0 0 80px #7f5af0;
-    transition: box-shadow 0.3s ease;
-  }
-  .glow-button:hover {
-    box-shadow:
-      0 0 25px #a78bfa,
-      0 0 50px #a78bfa,
-      0 0 90px #a78bfa,
-      0 0 140px #a78bfa;
-    transform: scale(1.1);
-  }
-  /* Space ship icon button style */
-  .space-ship-btn {
-    transition: transform 0.4s ease, filter 0.4s ease;
-    will-change: transform, filter;
-  }
-  .space-ship-btn:hover {
-    transform: scale(1.4) rotate(25deg);
-    filter: drop-shadow(0 0 12px #7f5af0);
-  }
-  .space-ship-btn:active {
-    transform: scale(1.2) rotate(15deg);
-    filter: drop-shadow(0 0 8px #7f5af0);
-  }
-  /* Project card 3D hover effect with depth and parallax */
-  .project-card {
-    transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
-    will-change: transform;
-    cursor: pointer;
-    perspective: 1400px;
-    position: relative;
-  }
-  .project-card:hover {
-    box-shadow:
-      0 0 30px #7f5af0,
-      0 0 60px #7f5af0,
-      0 0 90px #7f5af0;
-  }
-  .project-card-inner {
-    transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
-  }
-  /* Spotify song hover effect with 3D pop */
-  .spotify-song {
-    transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform, background-color, color, box-shadow;
-    transform-style: preserve-3d;
-  }
-  .spotify-song:hover {
-    background-color: #7f5af0;
-    color: white;
-    cursor: pointer;
-    transform: scale(1.08) translateZ(15px);
-    box-shadow:
-      0 0 15px #7f5af0,
-      0 0 30px #7f5af0;
-  }
-  .spotify-song:active {
-    transform: scale(0.98) translateZ(0);
-    box-shadow: none;
-  }
-  /* Fade and bounce animations for Thank You text */
-  @keyframes fadeInBounce {
-    0% {
-      opacity: 0;
-      transform: translateY(-60px) scale(0.8);
+   body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0f111a;
+      color: #e0e0e0;
+      overflow-x: hidden;
     }
-    50% {
-      opacity: 1;
-      transform: translateY(0) scale(1.05);
+    #canvas3d {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
     }
-    70% {
-      transform: translateY(-20px) scale(1.02);
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
     }
-    100% {
-      transform: translateY(0) scale(1);
+    ::-webkit-scrollbar-track {
+      background: #1a1c29;
     }
-  }
-  .fade-in-bounce {
-    animation: fadeInBounce 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-  /* Star twinkle animation */
-  @keyframes twinkle {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-  .star {
-    animation: twinkle 3s infinite ease-in-out;
-  }
-  
-  /* 3D Profile Image Container */
-  .profile-3d-container {
-    position: relative;
-    width: 340px;
-    height: 340px;
-    perspective: 1400px;
-    margin: 0 auto;
-    transform-style: preserve-3d;
-    cursor: pointer;
-  }
-  
-  .profile-3d-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
-  }
-  
-  .profile-3d-container:hover .profile-3d-inner {
-    transform: rotateY(25deg) rotateX(20deg);
-  }
-  
-  .profile-image-wrapper {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 50%;
-    overflow: hidden;
-    transform-style: preserve-3d;
-    box-shadow: 
-      0 0 30px rgba(127, 90, 240, 1),
-      0 0 60px rgba(127, 90, 240, 0.7),
-      0 0 100px rgba(127, 90, 240, 0.4);
-    transition: box-shadow 0.4s ease;
-  }
-  .profile-3d-container:hover .profile-image-wrapper {
-    box-shadow:
-      0 0 50px rgba(127, 90, 240, 1),
-      0 0 90px rgba(127, 90, 240, 0.9),
-      0 0 140px rgba(127, 90, 240, 0.6);
-  }
-  
-  .profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: translateZ(0);
-    border-radius: 50%;
-    filter: drop-shadow(0 0 15px #7f5af0);
-    transition: filter 0.4s ease;
-  }
-  .profile-3d-container:hover .profile-image {
-    filter: drop-shadow(0 0 30px #a78bfa);
-  }
-  
-  .profile-3d-depth {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: linear-gradient(45deg, rgba(127, 90, 240, 0.5), rgba(255, 0, 255, 0.5));
-    transform: translateZ(-20px);
-    filter: blur(8px);
-    transition: background 0.4s ease;
-  }
-  .profile-3d-container:hover .profile-3d-depth {
-    background: linear-gradient(45deg, rgba(127, 90, 240, 0.8), rgba(255, 0, 255, 0.8));
-  }
-  
-  .profile-3d-glow {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(127, 90, 240, 1) 0%, rgba(127, 90, 240, 0) 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    will-change: opacity, transform;
-  }
-  
-  .profile-3d-container:hover .profile-3d-glow {
-    opacity: 1;
-    animation: pulse 2s infinite alternate;
-    transform: scale(1.15);
-  }
-  
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-      opacity: 0.7;
+    ::-webkit-scrollbar-thumb {
+      background-color: #4f46e5;
+      border-radius: 10px;
+      border: 2px solid #1a1c29;
     }
-    100% {
-      transform: scale(1.2);
-      opacity: 1;
-    }
-  }
-  
-  .profile-3d-particles {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: visible;
-    pointer-events: none;
-  }
-  
-  .profile-3d-particles div {
-    will-change: transform, opacity;
-  }
-  
-  .profile-3d-hologram {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, transparent 0%, rgba(127, 90, 240, 0.2) 25%, rgba(127, 90, 240, 0.5) 50%, rgba(127, 90, 240, 0.2) 75%, transparent 100%);
-    background-size: 400% 400%;
-    animation: hologram 3s ease infinite;
-    border-radius: 50%;
-    pointer-events: none;
-  }
-  
-  @keyframes hologram {
-    0% {
-      background-position: 0% 50%;
-      opacity: 0.4;
-    }
-    50% {
-      background-position: 100% 50%;
-      opacity: 0.9;
-    }
-    100% {
-      background-position: 0% 50%;
-      opacity: 0.4;
-    }
-  }
-  
-  .profile-3d-scanline {
-    position: absolute;
-    width: 100%;
-    height: 6px;
-    background-color: rgba(127, 90, 240, 0.9);
-    box-shadow: 0 0 20px 4px rgba(127, 90, 240, 0.9);
-    top: 0;
-    left: 0;
-    opacity: 0.9;
-    animation: scanline 3s linear infinite;
-    border-radius: 4px;
-    pointer-events: none;
-  }
-  
-  @keyframes scanline {
-    0% {
-      top: 0%;
-    }
-    100% {
-      top: 100%;
-    }
-  }
-  
-  .profile-3d-name {
-    position: absolute;
-    bottom: -55px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: white;
-    font-weight: 900;
-    font-size: 1.75rem;
-    text-shadow: 0 0 20px rgba(127, 90, 240, 1);
-    opacity: 0;
-    transform: translateY(35px);
-    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    user-select: none;
-  }
-  
-  .profile-3d-container:hover .profile-3d-name {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  /* VR-like high quality rendering effects */
-  .vr-quality {
-    image-rendering: high-quality;
-    filter: contrast(1.2) saturate(1.4) brightness(1.15);
-    transition: filter 0.4s ease;
-  }
-  
-  /* Parallax effect for depth */
-  .parallax-bg {
-    position: absolute;
-    width: 120%;
-    height: 120%;
-    top: -10%;
-    left: -10%;
-    background: radial-gradient(circle, rgba(127, 90, 240, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
-    transform: translateZ(-50px);
-    pointer-events: none;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  /* Navbar background blur and shadow on scroll */
-  #navbar.scrolled {
-    background-color: rgba(15, 10, 30, 0.9);
-    box-shadow: 0 3px 20px rgba(127, 90, 240, 0.7);
-    backdrop-filter: saturate(180%) blur(25px);
-    transition: background-color 0.4s ease, box-shadow 0.4s ease;
-  }
-
-  /* Smooth fade in for sections */
-  section {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  section.visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  /* Button focus outline */
-  button:focus-visible {
-    outline: 3px solid #a78bfa;
-    outline-offset: 3px;
-  }
-  a:focus-visible {
-    outline: 3px solid #a78bfa;
-    outline-offset: 3px;
-  }
-  /* Project card inner shadow and layered 3D effect */
-  .project-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 1rem;
-    box-shadow:
-      inset 0 0 20px rgba(255, 255, 255, 0.1),
-      inset 0 0 40px rgba(127, 90, 240, 0.6);
-    pointer-events: none;
-    transition: box-shadow 0.5s ease;
-  }
-  .project-card:hover::before {
-    box-shadow:
-      inset 0 0 30px rgba(255, 255, 255, 0.2),
-      inset 0 0 60px rgba(167, 138, 250, 0.9);
-  }
-  /* Project card image 3D pop on hover */
-  .project-card img {
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
-    will-change: transform, box-shadow;
-    border-radius: 0.75rem;
-  }
-  .project-card:hover img {
-    transform: translateZ(40px) scale(1.05);
-    box-shadow:
-      0 0 25px #a78bfa,
-      0 0 50px #a78bfa;
-  }
-  /* Spotify song icon glow on hover */
-  .spotify-song i {
-    transition: text-shadow 0.35s ease;
-  }
-  .spotify-song:hover i {
-    text-shadow:
-      0 0 8px #7f5af0,
-      0 0 15px #7f5af0;
-  }
-  /* Ripple effect for profile container click */
-  .ripple-effect {
-    position: absolute;
-    border-radius: 50%;
-    background-color: rgba(127, 90, 240, 0.4);
-    pointer-events: none;
-    transform: scale(0);
-    opacity: 0;
-    will-change: transform, opacity;
-  }
-
-  /* Sparkle background canvas styling */
-  #sparkleCanvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
   </style>
  </head>
- <body class="bg-black text-white font-sans overflow-x-hidden">
-  <!-- Landing Page -->
-  <section class="relative w-screen h-screen flex items-center justify-center bg-black overflow-hidden" id="landing">
-   <canvas id="sparkleCanvas"></canvas>
-   <button class="relative z-10 px-20 py-6 text-4xl font-extrabold text-white rounded-lg glow-button cursor-pointer select-none" id="getStartedBtn" aria-label="Get Started Button" type="button">
-    Get Started
-   </button>
-  </section>
-  <!-- Home -->
-  <section class="relative w-screen h-screen flex flex-col" id="home" tabindex="-1">
-   <nav class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-transparent backdrop-blur-md transition" id="navbar" role="navigation" aria-label="Primary Navigation">
-    <ul class="flex space-x-8 text-white text-lg font-semibold" role="menubar">
-     <li role="none">
-      <a class="nav-link hover:text-purple-400 transition" href="#project" role="menuitem" tabindex="0">
-       Project
+ <body class="relative min-h-screen">
+  <canvas id="canvas3d">
+  </canvas>
+  <header class="fixed top-0 left-0 w-full z-30 bg-gradient-to-b from-[#0f111acc] to-transparent backdrop-blur-md">
+   <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a class="text-2xl font-bold text-indigo-500 tracking-wide select-none" href="#home">
+     Naila Putri Lapian
+    </a>
+    <ul class="hidden md:flex space-x-8 text-gray-300 font-medium">
+     <li>
+      <a class="hover:text-indigo-500 transition" href="#home">
+       Home
       </a>
      </li>
-     <li role="none">
-      <a class="nav-link hover:text-purple-400 transition" href="#portfolio" role="menuitem" tabindex="0">
-       Portfolio
+     <li>
+      <a class="hover:text-indigo-500 transition" href="#about">
+       About
       </a>
      </li>
-     <li role="none">
-      <a class="nav-link hover:text-purple-400 transition" href="#spotify" role="menuitem" tabindex="0">
-       Spotify
+     <li>
+      <a class="hover:text-indigo-500 transition" href="#projects">
+       Projects
       </a>
      </li>
-     <li role="none">
-      <a class="nav-link hover:text-purple-400 transition" href="#thankyou" role="menuitem" tabindex="0">
-       Thank You
+     <li>
+      <a class="hover:text-indigo-500 transition" href="#contact">
+       Contact
       </a>
      </li>
     </ul>
-    <button aria-label="Go to Project Section" class="space-ship-btn text-purple-400 hover:text-purple-600 text-3xl" id="toProjectBtn" type="button">
-     <i class="fas fa-rocket" aria-hidden="true"></i>
+    <button aria-label="Open menu" class="md:hidden text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400" id="menuBtn">
+     <i class="fas fa-bars fa-lg">
+     </i>
     </button>
    </nav>
-   <main class="flex-grow flex flex-col items-center justify-center px-6 text-center max-w-4xl mx-auto" tabindex="0">
-    <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-     Selamat Datang di Portfolio Harrits Alamsyah
+   <div class="md:hidden bg-[#12141f] text-gray-300 px-6 py-4 space-y-4 hidden" id="mobileMenu">
+    <a class="block hover:text-indigo-500 transition" href="#home">
+     Home
+    </a>
+    <a class="block hover:text-indigo-500 transition" href="#about">
+     About
+    </a>
+    <a class="block hover:text-indigo-500 transition" href="#projects">
+     Projects
+    </a>
+    <a class="block hover:text-indigo-500 transition" href="#contact">
+     Contact
+    </a>
+   </div>
+  </header>
+  <main class="relative z-10 pt-24 max-w-7xl mx-auto px-6">
+   <!-- Home Section -->
+   <section class="min-h-screen flex flex-col justify-center items-center text-center px-4" id="home">
+    <h1 class="text-5xl md:text-7xl font-extrabold text-indigo-500 mb-4 leading-tight">
+     Hi, I'm
+     <span class="text-white">
+      Naila Putri Lapian
+     </span>
     </h1>
-    <p class="text-xl md:text-2xl text-gray-300 max-w-3xl">
-     Creative Freelance Developer, Admin Profesional di Pelindo, dan Mahasiswa aktif yang juga mengerjakan proyek-proyek digital.
+    <p class="text-lg md:text-xl max-w-3xl text-gray-300 mb-8">
+     A passionate Web Developer &amp; Designer blending creativity with technology to craft immersive digital experiences.
     </p>
-   </main>
-  </section>
-  <!-- Project -->
-  <section class="relative w-screen h-screen flex flex-col bg-gradient-to-tr from-black via-purple-900 to-black px-6 py-12" id="project" tabindex="-1">
-   <div class="flex justify-between items-center mb-8 max-w-7xl mx-auto w-full">
-    <h2 class="text-4xl font-bold text-white tracking-wide">
-     Project
-    </h2>
-    <button aria-label="Go to Portfolio Section" class="space-ship-btn text-purple-400 hover:text-purple-600 text-3xl" id="toPortfolioBtn" type="button">
-     <i class="fas fa-rocket" aria-hidden="true"></i>
-    </button>
-   </div>
-   <div class="perspective grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto flex-grow">
-    <article class="project-card bg-gradient-to-br from-purple-800 to-purple-600 rounded-xl p-6 shadow-lg select-none" tabindex="0" role="article" aria-label="Project Galactic E-commerce">
-     <div class="project-card-inner">
-      <h3 class="text-2xl font-semibold mb-3 text-white">
-       Galactic E-commerce
-      </h3>
-      <p class="text-gray-300 mb-4">
-       Platform e-commerce futuristik dengan UI 3D dan animasi interaktif untuk pengalaman belanja luar angkasa.
+    <a class="inline-flex items-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-semibold transition shadow-lg shadow-indigo-700/50" href="#projects">
+     View My Work
+     <i class="fas fa-arrow-right ml-3">
+     </i>
+    </a>
+   </section>
+   <!-- About Section -->
+   <section class="py-20 md:py-32" id="about">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+     <div class="order-2 md:order-1">
+      <h2 class="text-4xl font-bold text-indigo-500 mb-6">
+       About Me
+      </h2>
+      <p class="text-gray-300 mb-6 leading-relaxed">
+       I am Naila Putri Lapian, a student of Universitas Muhammadiyah Sumatera majoring in Information Technology. Previously, I graduated from SMA Negeri 14 Medan with a focus on MIPA. I have a passion for swimming, badminton, karate, drawing, and editing. I specialize in web editing and development, graphic design, and photo editing. I am skilled in HTML, CSS, JavaScript, and basic responsive web design. Problem-solving and creativity are my strengths.
       </p>
-      <img alt="User interface design of a futuristic galactic e-commerce website with 3D elements and neon purple glow" class="rounded-md shadow-md" height="200" src="https://storage.googleapis.com/a1aa/image/b8ddf4c8-686e-4923-c55a-114c9cb50585.jpg" width="400"/>
+      <ul class="space-y-3 text-gray-300">
+       <li>
+        <i class="fas fa-university text-indigo-500 mr-3">
+        </i>
+        Universitas Muhammadiyah Sumatera (Information Technology)
+       </li>
+       <li>
+        <i class="fas fa-school text-indigo-500 mr-3">
+        </i>
+        SMA Negeri 14 Medan (MIPA)
+       </li>
+       <li>
+        <i class="fas fa-swimmer text-indigo-500 mr-3">
+        </i>
+        Hobbies: Swimming, Badminton, Karate, Drawing, Editing
+       </li>
+       <li>
+        <i class="fas fa-code text-indigo-500 mr-3">
+        </i>
+        Skills: Web Editing &amp; Development, HTML, CSS, JavaScript, Graphic Design, Photo Editing, Responsive Web Design
+       </li>
+      </ul>
      </div>
-    </article>
-    <article class="project-card bg-gradient-to-br from-purple-800 to-purple-600 rounded-xl p-6 shadow-lg select-none" tabindex="0" role="article" aria-label="Project Space Admin Dashboard">
-     <div class="project-card-inner">
-      <h3 class="text-2xl font-semibold mb-3 text-white">
-       Space Admin Dashboard
-      </h3>
-      <p class="text-gray-300 mb-4">
-       Dashboard admin profesional dengan tema luar angkasa untuk manajemen data Pelindo yang efisien dan modern.
-      </p>
-      <img alt="Admin dashboard interface themed with space elements, dark mode with purple neon highlights and data charts" class="rounded-md shadow-md" height="200" src="https://storage.googleapis.com/a1aa/image/be228af0-1f16-40e3-5579-2ecb88f11aa4.jpg" width="400"/>
+     <div class="order-1 md:order-2 flex justify-center">
+      <img alt="Portrait of Naila Putri Lapian with soft lighting and modern background" class="rounded-xl shadow-lg max-w-full w-80 md:w-full" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/465ab6bd-8d9e-46ca-09bf-f4348f79a323.jpg" width="400"/>
      </div>
-    </article>
-    <article class="project-card bg-gradient-to-br from-purple-800 to-purple-600 rounded-xl p-6 shadow-lg select-none" tabindex="0" role="article" aria-label="Project Digital Project Hub">
-     <div class="project-card-inner">
-      <h3 class="text-2xl font-semibold mb-3 text-white">
-       Digital Project Hub
-      </h3>
-      <p class="text-gray-300 mb-4">
-       Platform kolaborasi proyek digital dengan fitur manajemen tugas dan komunikasi real-time, desain futuristik dan responsif.
-      </p>
-      <img alt="Futuristic digital project collaboration platform interface with task management and real-time chat, space themed" class="rounded-md shadow-md" height="200" src="https://storage.googleapis.com/a1aa/image/4154fc34-4cc6-4890-fd55-81d87519b895.jpg" width="400"/>
-     </div>
-    </article>
-   </div>
-  </section>
-  <!-- Portfolio -->
-  <section class="relative w-screen h-screen flex flex-col bg-gradient-to-tr from-black via-purple-900 to-black px-6 py-12 overflow-y-auto" id="portfolio" tabindex="-1">
-   <div class="flex justify-between items-center mb-8 max-w-7xl mx-auto w-full">
-    <h2 class="text-4xl font-bold text-white tracking-wide">
-     Portfolio Harrits Alamsyah
+    </div>
+   </section>
+   <!-- Projects Section -->
+   <section class="py-20 md:py-32 bg-[#12141f] rounded-xl px-6 md:px-12" id="projects">
+    <h2 class="text-4xl font-bold text-indigo-500 mb-12 text-center">
+     My Projects
     </h2>
-    <button aria-label="Go to Spotify Section" class="space-ship-btn text-purple-400 hover:text-purple-600 text-3xl" id="toSpotifyBtn" type="button">
-     <i class="fas fa-rocket" aria-hidden="true"></i>
-    </button>
-   </div>
-   <div class="max-w-5xl mx-auto text-gray-300 space-y-8">
-    <section>
-     <h3 class="text-2xl font-semibold mb-2 text-white">
-      Deskripsi Pribadi
-     </h3>
-     <ul class="list-disc list-inside space-y-1">
-      <li>
-       <strong>
-        Nama:
-       </strong>
-       Harrits Alamsyah
-      </li>
-      <li>
-       <strong>
-        Tanggal Lahir:
-       </strong>
-       3 Desember 2004
-      </li>
-      <li>
-       <strong>
-        Tempat Lahir:
-       </strong>
-       Medan
-      </li>
-      <li>
-       <strong>
-        Pendidikan:
-       </strong>
-       Universitas Muhammadiyah Sumatera Utara (UMSU)
-      </li>
-      <li>
-       <strong>
-        Pekerjaan:
-       </strong>
-       Creative Freelance Developer dan Admin Profesional di Pelindo
-      </li>
-     </ul>
-    </section>
-    <section>
-     <h3 class="text-2xl font-semibold mb-2 text-white">
-      Keterampilan
-     </h3>
-     <ul class="list-disc list-inside space-y-1">
-      <li>
-       Pengembangan Web
-      </li>
-      <li>
-       Desain Grafis
-      </li>
-      <li>
-       Manajemen Proyek
-      </li>
-     </ul>
-    </section>
-    <section>
-     <h3 class="text-2xl font-semibold mb-2 text-white">
-      Proyek Terkait
-     </h3>
-     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <article class="bg-gradient-to-br from-purple-800 to-purple-600 rounded-lg p-4 shadow-lg" tabindex="0" role="article" aria-label="Portfolio project Galactic E-commerce">
-       <h4 class="text-xl font-semibold mb-1 text-white">
-        Galactic E-commerce
-       </h4>
-       <p class="text-gray-300 mb-2">
-        Platform e-commerce futuristik dengan UI 3D dan animasi interaktif.
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+     <article class="bg-[#1e2130] rounded-xl shadow-lg hover:shadow-indigo-600 transition-shadow duration-300 overflow-hidden">
+      <img alt="Project 1: Web Development Dashboard UI with dark mode and interactive charts" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/c2cb9276-001b-4e95-d6b2-d3304ff4385d.jpg" width="600"/>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold text-indigo-400 mb-2">
+        Interactive Dashboard UI
+       </h3>
+       <p class="text-gray-300 mb-4">
+        A modern dashboard interface featuring dark mode, real-time data visualization, and smooth animations.
        </p>
-       <a class="text-purple-400 hover:text-purple-600 underline focus:outline-none focus:ring-2 focus:ring-purple-400" href="#" tabindex="0">
-        Lihat Proyek
+       <a class="text-indigo-500 hover:text-indigo-400 font-semibold inline-flex items-center" href="#">
+        View Details
+        <i class="fas fa-arrow-right ml-2">
+        </i>
        </a>
-      </article>
-      <article class="bg-gradient-to-br from-purple-800 to-purple-600 rounded-lg p-4 shadow-lg" tabindex="0" role="article" aria-label="Portfolio project Space Admin Dashboard">
-       <h4 class="text-xl font-semibold mb-1 text-white">
-        Space Admin Dashboard
-       </h4>
-       <p class="text-gray-300 mb-2">
-        Dashboard admin profesional dengan tema luar angkasa untuk Pelindo.
+      </div>
+     </article>
+     <article class="bg-[#1e2130] rounded-xl shadow-lg hover:shadow-indigo-600 transition-shadow duration-300 overflow-hidden">
+      <img alt="Project 2: Responsive Portfolio Website with 3D elements and animations" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/67c6a6ea-2d23-4f4a-bfe7-10c3988cbede.jpg" width="600"/>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold text-indigo-400 mb-2">
+        3D Portfolio Website
+       </h3>
+       <p class="text-gray-300 mb-4">
+        A portfolio site integrating 3D visuals and smooth animations for an immersive user experience.
        </p>
-       <a class="text-purple-400 hover:text-purple-600 underline focus:outline-none focus:ring-2 focus:ring-purple-400" href="#" tabindex="0">
-        Lihat Proyek
+       <a class="text-indigo-500 hover:text-indigo-400 font-semibold inline-flex items-center" href="#">
+        View Details
+        <i class="fas fa-arrow-right ml-2">
+        </i>
        </a>
-      </article>
-      <article class="bg-gradient-to-br from-purple-800 to-purple-600 rounded-lg p-4 shadow-lg" tabindex="0" role="article" aria-label="Portfolio project Digital Project Hub">
-       <h4 class="text-xl font-semibold mb-1 text-white">
-        Digital Project Hub
-       </h4>
-       <p class="text-gray-300 mb-2">
-        Platform kolaborasi proyek digital dengan fitur manajemen tugas dan komunikasi real-time.
+      </div>
+     </article>
+     <article class="bg-[#1e2130] rounded-xl shadow-lg hover:shadow-indigo-600 transition-shadow duration-300 overflow-hidden">
+      <img alt="Project 3: Graphic Design Portfolio showcasing photo editing and branding" class="w-full h-48 object-cover" height="400" loading="lazy" src="https://storage.googleapis.com/a1aa/image/093dc0c4-91bd-4b02-3f85-27312f06342b.jpg" width="600"/>
+      <div class="p-6">
+       <h3 class="text-xl font-semibold text-indigo-400 mb-2">
+        Graphic Design &amp; Branding
+       </h3>
+       <p class="text-gray-300 mb-4">
+        A collection of graphic design projects including photo editing, branding, and creative visuals.
        </p>
-       <a class="text-purple-400 hover:text-purple-600 underline focus:outline-none focus:ring-2 focus:ring-purple-400" href="#" tabindex="0">
-        Lihat Proyek
+       <a class="text-indigo-500 hover:text-indigo-400 font-semibold inline-flex items-center" href="#">
+        View Details
+        <i class="fas fa-arrow-right ml-2">
+        </i>
        </a>
-      </article>
-     </div>
-    </section>
-    <section>
-     <h3 class="text-2xl font-semibold mb-4 text-white">
-      Tentang Harrits Alamsyah
-     </h3>
-     <div class="flex flex-col md:flex-row gap-8 mb-6">
-       <div class="w-full md:w-1/3 flex justify-center">
-         <!-- 3D VR-like Profile Image -->
-         <div class="profile-3d-container" id="profileContainer" role="img" aria-label="3D interactive profile image of Harrits Alamsyah" tabindex="0">
-           <div class="profile-3d-inner">
-             <div class="parallax-bg"></div>
-             <div class="profile-3d-depth"></div>
-             <div class="profile-image-wrapper">
-               <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-05-07%20at%2009.02.01_f29e9898.jpg-W1WKEjb5B3LNSUwsT0Ahm2JPGrIr4h.jpeg" alt="Foto close-up Harrits Alamsyah dengan latar belakang gelap dan efek cahaya ungu futuristik" class="profile-image vr-quality" id="profileImage" />
-               <div class="profile-3d-hologram"></div>
-               <div class="profile-3d-scanline"></div>
-             </div>
-             <div class="profile-3d-glow"></div>
-             <div class="profile-3d-particles" id="profileParticles"></div>
-           </div>
-           <div class="profile-3d-name">Harrits Alamsyah</div>
-         </div>
-       </div>
-       <div class="w-full md:w-2/3">
-         <p class="text-gray-300 leading-relaxed">
-           Saya adalah Harrits Alamsyah, seorang mahasiswa yang saat ini menempuh pendidikan di Universitas Muhammadiyah Sumatera Utara (UMSU). Lahir di Medan pada 3 Desember 2004, saya telah menghabiskan 21 tahun hidup saya dengan penuh semangat untuk belajar dan berinovasi. Sejak kecil, saya selalu memiliki ketertarikan yang besar terhadap teknologi dan kreativitas, yang mendorong saya untuk mengeksplorasi berbagai bidang, terutama dalam dunia digital.
-         </p>
-       </div>
-     </div>
-     <p class="text-gray-300 leading-relaxed mt-4">
-      Pendidikan saya dimulai di SD Swasta Tribakti, di mana saya belajar dasar-dasar pengetahuan dan keterampilan yang membentuk fondasi saya. Setelah itu, saya melanjutkan ke MTsN 3 Deli Serdang, di mana saya mulai mengembangkan minat saya dalam bidang teknologi informasi. Selanjutnya, saya menempuh pendidikan di MAS Al-Ulum, di mana saya semakin tertarik untuk mendalami ilmu komputer dan pengembangan perangkat lunak.
-     </p>
-     <p class="text-gray-300 leading-relaxed mt-4">
-      Saat ini, saya sedang menyelesaikan program S1 di UMSU, di mana saya tidak hanya fokus pada studi akademis, tetapi juga aktif terlibat dalam berbagai proyek digital. Saya bekerja sebagai Creative Freelance Developer, di mana saya menciptakan solusi digital yang inovatif untuk klien. Dalam peran ini, saya telah mengembangkan berbagai aplikasi web dan desain grafis yang membantu bisnis dalam meningkatkan kehadiran online mereka.
-     </p>
-     <p class="text-gray-300 leading-relaxed mt-4">
-      Selain itu, saya juga menjabat sebagai Admin Profesional di Pelindo, di mana saya bertanggung jawab untuk mengelola sistem informasi dan memastikan kelancaran operasional. Pengalaman ini telah memberikan saya wawasan yang berharga tentang manajemen proyek dan kolaborasi tim, serta keterampilan komunikasi yang efektif.
-     </p>
-     <p class="text-gray-300 leading-relaxed mt-4">
-      Saya percaya bahwa kombinasi antara pendidikan formal dan pengalaman praktis adalah kunci untuk menciptakan solusi yang cerdas dan berdampak. Dengan latar belakang yang kuat dalam teknologi dan kreativitas, saya siap untuk menghadapi tantangan di dunia digital dan berkontribusi pada proyek-proyek yang bermanfaat.
-     </p>
-     <p class="text-gray-300 leading-relaxed mt-4">
-      Di luar dunia akademis dan pekerjaan, saya juga memiliki hobi yang beragam, termasuk desain grafis, pengembangan web, dan eksplorasi teknologi terbaru. Saya selalu berusaha untuk terus belajar dan berkembang, baik secara profesional maupun pribadi. Dengan semangat yang tinggi dan dedikasi yang kuat, saya berkomitmen untuk membangun karya digital yang tidak hanya memenuhi kebutuhan klien, tetapi juga memberikan nilai tambah bagi masyarakat.
-     </p>
-    </section>
-   </div>
-  </section>
-  <!-- Spotify -->
-  <section class="relative w-screen h-screen flex flex-col bg-gradient-to-tr from-black via-purple-900 to-black px-6 py-12 overflow-y-auto" id="spotify" tabindex="-1">
-   <div class="flex justify-between items-center mb-8 max-w-7xl mx-auto w-full">
-    <h2 class="text-4xl font-bold text-white tracking-wide">
-     Lagu Favorit Harrits
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- Contact Section -->
+   <section class="py-20 md:py-32" id="contact">
+    <h2 class="text-4xl font-bold text-indigo-500 mb-12 text-center">
+     Get In Touch
     </h2>
-    <button aria-label="Go to Thank You Section" class="space-ship-btn text-purple-400 hover:text-purple-600 text-3xl" id="toThankYouBtn" type="button">
-     <i class="fas fa-rocket" aria-hidden="true"></i>
-    </button>
-   </div>
-   <div class="max-w-4xl mx-auto flex flex-col items-center space-y-8">
-    <img alt="Album cover of NIKI with colorful artistic design and space theme" class="rounded-lg shadow-lg" height="300" src="https://storage.googleapis.com/a1aa/image/f0295d9d-b75e-4ec9-00be-f45ca46bf882.jpg" width="300"/>
-    <ul class="w-full space-y-4" role="list" aria-label="Favorite songs list">
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song Lowkey by NIKI, duration 3 minutes 30 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         Lowkey
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
+    <div class="max-w-3xl mx-auto bg-[#1a1c29] rounded-xl p-8 shadow-lg">
+     <form action="mailto:nailaputrilapian@gmail.com" class="space-y-6" enctype="text/plain" method="POST">
+      <div>
+       <label class="block text-gray-300 font-medium mb-2" for="name">
+        Name
+       </label>
+       <input class="w-full rounded-md bg-[#12141f] border border-gray-700 text-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="name" name="name" placeholder="Your full name" required="" type="text"/>
       </div>
-      <span class="text-purple-300 font-mono">
-       3:30
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song Every Summertime by NIKI, duration 3 minutes 45 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         Every Summertime
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
+      <div>
+       <label class="block text-gray-300 font-medium mb-2" for="email">
+        Email
+       </label>
+       <input class="w-full rounded-md bg-[#12141f] border border-gray-700 text-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="email" name="email" placeholder="your.email@example.com" required="" type="email"/>
       </div>
-      <span class="text-purple-300 font-mono">
-       3:45
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song Spell by NIKI, duration 3 minutes 20 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         Spell
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
+      <div>
+       <label class="block text-gray-300 font-medium mb-2" for="message">
+        Message
+       </label>
+       <textarea class="w-full rounded-md bg-[#12141f] border border-gray-700 text-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" id="message" name="message" placeholder="Write your message here..." required="" rows="5"></textarea>
       </div>
-      <span class="text-purple-300 font-mono">
-       3:20
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song Indigo by NIKI, duration 3 minutes 50 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         Indigo
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
-      </div>
-      <span class="text-purple-300 font-mono">
-       3:50
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song Switchblade by NIKI, duration 3 minutes 15 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         Switchblade
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
-      </div>
-      <span class="text-purple-300 font-mono">
-       3:15
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song La La Lost You by NIKI, duration 3 minutes 40 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         La La Lost You
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
-      </div>
-      <span class="text-purple-300 font-mono">
-       3:40
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song Vintage by NIKI, duration 3 minutes 25 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         Vintage
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
-      </div>
-      <span class="text-purple-300 font-mono">
-       3:25
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song Dancing With The Devil by NIKI, duration 3 minutes 55 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         Dancing With The Devil
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
-      </div>
-      <span class="text-purple-300 font-mono">
-       3:55
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song High School in Jakarta by NIKI, duration 3 minutes 35 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         High School in Jakarta
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
-      </div>
-      <span class="text-purple-300 font-mono">
-       3:35
-      </span>
-     </li>
-     <li class="spotify-song flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-purple-700 to-purple-900 cursor-pointer transition transform hover:scale-105" tabindex="0" role="listitem" aria-label="Song Selene by NIKI, duration 3 minutes 45 seconds">
-      <div class="flex items-center space-x-4">
-       <i class="fas fa-music text-xl text-white" aria-hidden="true"></i>
-       <div>
-        <p class="font-semibold text-white">
-         Selene
-        </p>
-        <p class="text-purple-300 text-sm">
-         NIKI
-        </p>
-       </div>
-      </div>
-      <span class="text-purple-300 font-mono">
-       3:45
-      </span>
-     </li>
-    </ul>
-   </div>
-  </section>
-  <!-- Thank You -->
-  <section class="relative w-screen h-screen flex flex-col items-center justify-center bg-black overflow-hidden px-6 text-center" id="thankyou" tabindex="-1">
-   <canvas class="absolute inset-0 w-full h-full" id="starsCanvas"></canvas>
-   <h1 class="text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 opacity-0" id="thankYouTitle" tabindex="0" aria-live="polite" aria-atomic="true">
-    Terima Kasih!
-   </h1>
-   <p class="mt-6 max-w-3xl text-lg md:text-xl text-gray-300 opacity-0" id="thankYouMessage" tabindex="0" aria-live="polite" aria-atomic="true">
-    Terima kasih telah mengunjungi portofolio saya! Saya sangat menghargai waktu dan perhatian Anda. Semoga Anda menemukan inspirasi di sini dan saya berharap dapat berkolaborasi di masa depan!
-   </p>
-   <button aria-label="Back to Landing Page" class="mt-12 space-ship-btn text-purple-400 hover:text-purple-600 text-5xl" id="backToLandingBtn" type="button">
-    <i class="fas fa-rocket" aria-hidden="true"></i>
-   </button>
-  </section>
-  <!-- A-Frame VR Scene -->
-  <a-scene embedded="" style="position: fixed; bottom: 1rem; right: 1rem; width: 150px; height: 150px; z-index: 1000; border-radius: 1rem; overflow: hidden; box-shadow: 0 0 20px #7f5af0;" aria-label="3D rotating purple sphere VR scene" tabindex="0">
-   <a-sky color="#000000"></a-sky>
-   <a-entity animation="property: rotation; to: 0 405 0; loop: true; dur: 20000; easing: linear" geometry="primitive: sphere; radius: 1.2" material="shader: standard; color: #7f5af0; metalness: 0.8; roughness: 0.2" rotation="0 45 0"></a-entity>
-   <a-entity light="type: point; intensity: 1; color: #a78bfa" position="2 2 2"></a-entity>
-   <a-camera position="0 0 4"></a-camera>
-  </a-scene>
+      <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition shadow-lg shadow-indigo-700/50" type="submit">
+       Send Message
+      </button>
+     </form>
+     <div class="mt-8 text-center text-gray-400 space-y-2">
+      <p>
+       <i class="fas fa-envelope mr-2 text-indigo-500">
+       </i>
+       nailaputrilapian@gmail.com
+      </p>
+      <p>
+       <i class="fab fa-instagram mr-2 text-indigo-500">
+       </i>
+       <a class="hover:text-indigo-400 transition" href="https://instagram.com/ocenayo" rel="noopener noreferrer" target="_blank">
+        @ocenayo
+       </a>
+      </p>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer class="text-center py-8 text-gray-500 text-sm select-none">
+   © 2024 Naila Putri Lapian. All rights reserved.
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/libs/dat.gui.min.js">
+  </script>
   <script>
-   // Smooth scroll for nav links and fade in sections on scroll
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(link.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-        target.focus({preventScroll:true});
-      }
-    });
-  });
-
-  // Space ship buttons scroll handlers
-  const scrollToSection = (id) => {
-    const el = document.getElementById(id);
-    if(el){
-      el.scrollIntoView({ behavior: 'smooth' });
-      el.focus({preventScroll:true});
-    }
-  };
-
-  document.getElementById('getStartedBtn').addEventListener('click', () => scrollToSection('home'));
-  document.getElementById('toProjectBtn').addEventListener('click', () => scrollToSection('project'));
-  document.getElementById('toPortfolioBtn').addEventListener('click', () => scrollToSection('portfolio'));
-  document.getElementById('toSpotifyBtn').addEventListener('click', () => scrollToSection('spotify'));
-  document.getElementById('toThankYouBtn').addEventListener('click', () => scrollToSection('thankyou'));
-  document.getElementById('backToLandingBtn').addEventListener('click', () => scrollToSection('landing'));
-
-  // GSAP animation for Get Started button glow on hover
-  const getStartedBtn = document.getElementById('getStartedBtn');
-  gsap.set(getStartedBtn, { boxShadow: "0 0 15px #7f5af0" });
-  getStartedBtn.addEventListener('mouseenter', () => {
-    gsap.to(getStartedBtn, { boxShadow: "0 0 40px #7f5af0, 0 0 80px #7f5af0", duration: 0.6, repeat: -1, yoyo: true, ease: "power1.inOut" });
-  });
-  getStartedBtn.addEventListener('mouseleave', () => {
-    gsap.to(getStartedBtn, { boxShadow: "0 0 15px #7f5af0", duration: 0.6, clearProps: "boxShadow" });
-  });
-
-  // Navbar background and shadow on scroll
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    if(window.scrollY > 50){
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-  });
-
-  // Fade in sections on scroll using IntersectionObserver
-  const sections = document.querySelectorAll('section');
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.15
-  };
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('visible');
-      }
-    });
-  }, observerOptions);
-  sections.forEach(section => sectionObserver.observe(section));
-
-  // Sparkle background for Landing page
-  (() => {
-    const canvas = document.getElementById('sparkleCanvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let stars = [];
-
-    function init() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-      stars = [];
-      const starCount = Math.floor(width * height / 8000);
-      for(let i=0; i<starCount; i++) {
-        stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 1.2 + 0.3,
-          alpha: Math.random(),
-          alphaChange: (Math.random() * 0.02 + 0.005) * (Math.random() < 0.5 ? 1 : -1),
-          twinkleSpeed: Math.random() * 0.02 + 0.005
-        });
-      }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      stars.forEach(star => {
-        star.alpha += star.alphaChange;
-        if(star.alpha <= 0) {
-          star.alpha = 0;
-          star.alphaChange = Math.abs(star.alphaChange);
-        } else if(star.alpha >= 1) {
-          star.alpha = 1;
-          star.alphaChange = -Math.abs(star.alphaChange);
-        }
-        ctx.beginPath();
-        const gradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.radius * 4);
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${star.alpha})`);
-        gradient.addColorStop(0.5, `rgba(255, 255, 255, ${star.alpha * 0.3})`);
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        ctx.fillStyle = gradient;
-        ctx.arc(star.x, star.y, star.radius * 4, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      requestAnimationFrame(draw);
-    }
-
-    window.addEventListener('resize', () => {
-      init();
-    });
-
-    init();
-    draw();
-  })();
-
-  // Three.js Stars background for Thank You page with twinkle and slow zoom
-  (() => {
-    const canvas = document.getElementById('starsCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
-
-    const scene = new THREE.Scene();
-
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.z = 1;
-
-    // Create stars
-    const starsCount = 1200;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(starsCount * 3);
-
-    for(let i=0; i<starsCount; i++) {
-      positions[i*3] = (Math.random() - 0.5) * 12;
-      positions[i*3+1] = (Math.random() - 0.5) * 12;
-      positions[i*3+2] = (Math.random() - 0.5) * 12;
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: 0.035,
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      sizeAttenuation: true,
-    });
-
-    const stars = new THREE.Points(geometry, material);
-    scene.add(stars);
-
-    // Animate twinkling stars by changing opacity and slow zoom in/out
-    let clock = new THREE.Clock();
-
-    function animate() {
-      requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
-      material.opacity = 0.5 + 0.5 * Math.sin(elapsed * 3);
-      stars.rotation.y += 0.0007;
-      camera.position.z = 1 + 0.05 * Math.sin(elapsed * 0.5);
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
+   (() => {
+      const canvas = document.getElementById('canvas3d');
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth/window.innerHeight;
-      camera.updateProjectionMatrix();
-    });
-  })();
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-  // Thank You text animation with GSAP enhanced scale and bounce
-  window.addEventListener('load', () => {
-    const title = document.getElementById('thankYouTitle');
-    const message = document.getElementById('thankYouMessage');
-    gsap.to(title, {opacity: 1, y: 0, scale: 1, duration: 1.8, ease: "elastic.out(1, 0.5)", onStart: () => {
-      title.classList.add('fade-in-bounce');
-    }});
-    gsap.to(message, {opacity: 1, y: 0, scale: 1, duration: 1.8, delay: 1, ease: "elastic.out(1, 0.5)"});
-  });
-  
-  // 3D Profile Image Interactive Effects with enhanced parallax, glow pulse, and ripple
-  (() => {
-    const profileContainer = document.getElementById('profileContainer');
-    const profileImage = document.getElementById('profileImage');
-    const profileParticles = document.getElementById('profileParticles');
-    
-    if (!profileContainer || !profileImage || !profileParticles) return;
-    
-    // Create particles for the 3D effect
-    const particlesCount = 40;
-    for (let i = 0; i < particlesCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'absolute w-2 h-2 rounded-full bg-purple-500';
-      particle.style.left = `${Math.random() * 100}%`;
-      particle.style.top = `${Math.random() * 100}%`;
-      particle.style.opacity = '0';
-      particle.style.boxShadow = '0 0 8px #7f5af0, 0 0 16px #7f5af0';
-      profileParticles.appendChild(particle);
-    }
-    
-    // Animate particles with random pulsate and float
-    const particles = profileParticles.querySelectorAll('div');
-    particles.forEach((particle) => {
-      gsap.to(particle, {
-        opacity: Math.random() * 0.8 + 0.4,
-        duration: 2.5,
-        delay: Math.random() * 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
+      const scene = new THREE.Scene();
+
+      // Camera with smooth inertia controls
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 1.5, 4);
+
+      // OrbitControls with inertia and easing
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.1;
+      controls.minDistance = 2;
+      controls.maxDistance = 8;
+      controls.maxPolarAngle = Math.PI / 2.2;
+
+      // PBR Materials and environment
+      // Load HDR environment map for reflections and lighting
+      // Using a simple environment map from three.js examples (cube texture)
+      const loader = new THREE.CubeTextureLoader();
+      const envMap = loader.load([
+        'https://threejs.org/examples/textures/cube/Bridge2/posx.jpg',
+        'https://threejs.org/examples/textures/cube/Bridge2/negx.jpg',
+        'https://threejs.org/examples/textures/cube/Bridge2/posy.jpg',
+        'https://threejs.org/examples/textures/cube/Bridge2/negy.jpg',
+        'https://threejs.org/examples/textures/cube/Bridge2/posz.jpg',
+        'https://threejs.org/examples/textures/cube/Bridge2/negz.jpg',
+      ]);
+      envMap.encoding = THREE.sRGBEncoding;
+      scene.environment = envMap;
+      scene.background = new THREE.Color(0x0f111a);
+
+      // Ambient light for AO effect
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+      scene.add(ambientLight);
+
+      // Directional light for shadows
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+      dirLight.position.set(5, 10, 7);
+      dirLight.castShadow = true;
+      dirLight.shadow.mapSize.width = 2048;
+      dirLight.shadow.mapSize.height = 2048;
+      dirLight.shadow.camera.near = 1;
+      dirLight.shadow.camera.far = 20;
+      dirLight.shadow.camera.left = -10;
+      dirLight.shadow.camera.right = 10;
+      dirLight.shadow.camera.top = 10;
+      dirLight.shadow.camera.bottom = -10;
+      scene.add(dirLight);
+
+      // Ground plane with roughness and AO
+      const groundGeo = new THREE.PlaneGeometry(20, 20);
+      const groundMat = new THREE.MeshStandardMaterial({
+        color: 0x12141f,
+        roughness: 0.9,
+        metalness: 0.1,
       });
-      
-      gsap.to(particle, {
-        x: `${(Math.random() - 0.5) * 50}px`,
-        y: `${(Math.random() - 0.5) * 50}px`,
-        duration: 4 + Math.random() * 6,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
-      });
-    });
-    
-    // 3D rotation effect on mouse move with stronger parallax
-    profileContainer.addEventListener('mousemove', (e) => {
-      const rect = profileContainer.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      
-      const inner = profileContainer.querySelector('.profile-3d-inner');
-      gsap.to(inner, {
-        rotateY: x * 0.08,
-        rotateX: -y * 0.08,
-        duration: 0.4,
-        ease: "power3.out"
-      });
-      
-      // Parallax effect for depth layers
-      const parallaxBg = profileContainer.querySelector('.parallax-bg');
-      gsap.to(parallaxBg, {
-        x: -x * 0.05,
-        y: -y * 0.05,
-        duration: 0.4,
-        ease: "power3.out"
-      });
-    });
-    
-    // Reset rotation when mouse leaves with elastic bounce
-    profileContainer.addEventListener('mouseleave', () => {
-      const inner = profileContainer.querySelector('.profile-3d-inner');
-      gsap.to(inner, {
-        rotateY: 0,
-        rotateX: 0,
-        duration: 1.2,
-        ease: "elastic.out(1, 0.5)"
-      });
-      
-      const parallaxBg = profileContainer.querySelector('.parallax-bg');
-      gsap.to(parallaxBg, {
-        x: 0,
-        y: 0,
-        duration: 1.2,
-        ease: "elastic.out(1, 0.5)"
-      });
-    });
-    
-    // Add click interaction for VR-like effect with ripple, glow pulse, and 360 rotation
-    profileContainer.addEventListener('click', () => {
-      // Create a ripple effect
-      const ripple = document.createElement('div');
-      ripple.className = 'ripple-effect';
-      ripple.style.width = ripple.style.height = `${profileContainer.offsetWidth * 2}px`;
-      ripple.style.left = `calc(50% - ${profileContainer.offsetWidth}px)`;
-      ripple.style.top = `calc(50% - ${profileContainer.offsetWidth}px)`;
-      profileContainer.appendChild(ripple);
-      
-      gsap.timeline()
-        .to(ripple, {
-          opacity: 0.6,
-          scale: 1,
-          duration: 0.6,
-          ease: "power2.out"
-        })
-        .to(ripple, {
-          opacity: 0,
-          scale: 1.8,
-          duration: 0.8,
-          ease: "power2.in",
-          onComplete: () => {
-            ripple.remove();
-          }
+      const ground = new THREE.Mesh(groundGeo, groundMat);
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.y = -0.5;
+      ground.receiveShadow = true;
+      scene.add(ground);
+
+      // Create a 3D stylized "N" letter as portfolio logo centerpiece
+      // Using extruded text geometry with PBR material
+      const fontLoader = new THREE.FontLoader();
+      let textMesh;
+      fontLoader.load(
+        'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
+        (font) => {
+          const textGeo = new THREE.TextGeometry('N', {
+            font: font,
+            size: 1.5,
+            height: 0.4,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0.05,
+            bevelSize: 0.05,
+            bevelOffset: 0,
+            bevelSegments: 5,
+          });
+          textGeo.computeBoundingBox();
+          textGeo.center();
+
+          const textMat = new THREE.MeshPhysicalMaterial({
+            color: 0x7c3aed,
+            metalness: 1,
+            roughness: 0.15,
+            clearcoat: 1,
+            clearcoatRoughness: 0.1,
+            reflectivity: 0.8,
+            envMap: envMap,
+            envMapIntensity: 1,
+          });
+
+          textMesh = new THREE.Mesh(textGeo, textMat);
+          textMesh.castShadow = true;
+          textMesh.position.y = 0.5;
+          scene.add(textMesh);
+        }
+      );
+
+      // Create floating spheres representing skills with dynamic reflections
+      const skillSpheres = [];
+      const skillColors = [
+        0x8b5cf6, // violet
+        0x6366f1, // indigo
+        0x4f46e5, // blue-indigo
+        0x4338ca, // deep blue
+        0x3730a3, // navy
+      ];
+      const skillNames = [
+        'Web Editing & Development',
+        'HTML, CSS, JavaScript',
+        'Graphic Design & Photo Editing',
+        'Responsive Web Design',
+        'Problem Solving & Creativity',
+      ];
+
+      const sphereGeo = new THREE.SphereGeometry(0.3, 64, 64);
+
+      for (let i = 0; i < skillNames.length; i++) {
+        const mat = new THREE.MeshPhysicalMaterial({
+          color: skillColors[i],
+          metalness: 0.9,
+          roughness: 0.1,
+          clearcoat: 1,
+          clearcoatRoughness: 0.05,
+          envMap: envMap,
+          envMapIntensity: 1,
+          transparent: true,
+          opacity: 0.85,
         });
-      
-      // Pulse the glow strongly
-      const glow = profileContainer.querySelector('.profile-3d-glow');
-      gsap.fromTo(glow, {
-        opacity: 0.8,
-        scale: 1
-      }, {
-        opacity: 1,
-        scale: 1.4,
-        duration: 0.6,
-        yoyo: true,
-        repeat: 3,
-        ease: "power2.inOut"
+        const sphere = new THREE.Mesh(sphereGeo, mat);
+        sphere.castShadow = true;
+        sphere.position.set(
+          Math.cos((i / skillNames.length) * Math.PI * 2) * 2.5,
+          1 + Math.sin((i / skillNames.length) * Math.PI * 4) * 0.3,
+          Math.sin((i / skillNames.length) * Math.PI * 2) * 2.5
+        );
+        scene.add(sphere);
+        skillSpheres.push({ mesh: sphere, angle: (i / skillNames.length) * Math.PI * 2 });
+      }
+
+      // Raycaster for interactivity
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+      let INTERSECTED = null;
+
+      // Tooltip for skill names
+      const tooltip = document.createElement('div');
+      tooltip.style.position = 'fixed';
+      tooltip.style.padding = '6px 12px';
+      tooltip.style.background = 'rgba(124, 58, 237, 0.9)';
+      tooltip.style.color = '#fff';
+      tooltip.style.fontSize = '14px';
+      tooltip.style.borderRadius = '6px';
+      tooltip.style.pointerEvents = 'none';
+      tooltip.style.transition = 'opacity 0.3s ease';
+      tooltip.style.opacity = '0';
+      tooltip.style.zIndex = '50';
+      document.body.appendChild(tooltip);
+
+      function onMouseMove(event) {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        // Position tooltip near cursor
+        tooltip.style.left = event.clientX + 15 + 'px';
+        tooltip.style.top = event.clientY + 15 + 'px';
+      }
+
+      function onTouchMove(event) {
+        if (event.touches.length > 0) {
+          mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+          mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+
+          tooltip.style.left = event.touches[0].clientX + 15 + 'px';
+          tooltip.style.top = event.touches[0].clientY + 15 + 'px';
+        }
+      }
+
+      window.addEventListener('mousemove', onMouseMove, false);
+      window.addEventListener('touchmove', onTouchMove, false);
+
+      // Scroll event to subtly move camera forward/backward
+      let scrollY = 0;
+      window.addEventListener('scroll', () => {
+        scrollY = window.scrollY;
       });
-      
-      // Rotate 360 degrees with bounce easing
-      const inner = profileContainer.querySelector('.profile-3d-inner');
-      gsap.to(inner, {
-        rotateY: '+=360',
-        duration: 1.8,
-        ease: "elastic.out(1, 0.6)"
+
+      // Animate loop
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const elapsed = clock.getElapsedTime();
+
+        // Animate skill spheres orbiting slowly
+        skillSpheres.forEach((obj, i) => {
+          obj.angle += 0.002;
+          obj.mesh.position.x = Math.cos(obj.angle) * 2.5;
+          obj.mesh.position.z = Math.sin(obj.angle) * 2.5;
+          obj.mesh.position.y = 1 + Math.sin(elapsed * 2 + i) * 0.3;
+        });
+
+        // Animate text mesh subtle rotation
+        if (textMesh) {
+          textMesh.rotation.y = elapsed * 0.3;
+          textMesh.position.y = 0.5 + Math.sin(elapsed * 1.5) * 0.1;
+        }
+
+        // Update controls with damping
+        controls.update();
+
+        // Adjust camera position based on scroll with easing
+        const targetZ = 4 - scrollY * 0.002;
+        camera.position.z += (targetZ - camera.position.z) * 0.05;
+
+        // Raycasting for hover effect on spheres
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(skillSpheres.map((s) => s.mesh));
+
+        if (intersects.length > 0) {
+          if (INTERSECTED != intersects[0].object) {
+            INTERSECTED = intersects[0].object;
+            const index = skillSpheres.findIndex((s) => s.mesh === INTERSECTED);
+            tooltip.textContent = skillNames[index];
+            tooltip.style.opacity = '1';
+          }
+        } else {
+          INTERSECTED = null;
+          tooltip.style.opacity = '0';
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      // Handle resizing
+      window.addEventListener('resize', () => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
       });
-    });
-    
-    // Create a high-quality rendering effect
-    const enhanceImageQuality = () => {
-      // Apply a subtle sharpening filter
-      profileImage.style.filter = 'contrast(1.25) saturate(1.4) brightness(1.15)';
-      
-      // Add a subtle vignette effect for depth
-      const vignette = document.createElement('div');
-      vignette.className = 'absolute inset-0 rounded-full';
-      vignette.style.background = 'radial-gradient(circle, transparent 60%, rgba(0,0,0,0.5) 100%)';
-      vignette.style.pointerEvents = 'none';
-      profileImage.parentNode.appendChild(vignette);
-    };
-    
-    enhanceImageQuality();
-  })();
+
+      // Mobile menu toggle
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      menuBtn.addEventListener('click', () => {
+        if (mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.remove('hidden');
+        } else {
+          mobileMenu.classList.add('hidden');
+        }
+      });
+    })();
   </script>
  </body>
 </html>
